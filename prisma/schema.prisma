@@ -71,3 +71,13 @@ model Movie {
   duration String
 }
 
+model ShortFilms {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  description String
+  videoUrl String
+  thumbnailUrl String
+  genre String
+  duration String
+}
+

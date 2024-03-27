@@ -13,11 +13,38 @@ const Billboard: React.FC = () => {
     openModal(data?.id);
   }, [openModal, data?.id]);
 
-
-
   return (
     <div className="relative h-[56.25vw]">
-      <video poster={data?.thumbnailUrl} className="w-full h-[56.25vw] object-cover brightness-[60%] transition duration-500" autoPlay muted loop src={data?.videoUrl}></video>
+      <div className="absolute inset-0">
+        {data?.videoUrl.includes('youtube.com') ? (
+          <iframe
+            title="YouTube video player"
+            className="w-full h-full object-cover brightness-[60%] transition duration-500"
+            src={`${data?.videoUrl}&autoplay=1`}
+            frameBorder="0"
+            allowFullScreen
+          ></iframe>
+        ) : data?.videoUrl.includes('drive.google.com') ? (
+          <iframe
+            title="Google Drive video player"
+            className="w-full h-full object-cover brightness-[60%] transition duration-500"
+            src={data?.videoUrl.replace('/view', '/preview')}
+            frameBorder="0"
+            allowFullScreen
+          ></iframe>
+        ) : (
+          <video
+            poster={data?.thumbnailUrl}
+            className="w-full h-full object-cover brightness-[60%] transition duration-500"
+            autoPlay
+            muted
+            loop
+          >
+            <source src={data?.videoUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        )}
+      </div>
       <div className="absolute top-[30%] md:top-[40%] ml-4 md:ml-16">
         <p className="text-white text-1xl md:text-5xl h-full w-[50%] lg:text-6xl font-bold drop-shadow-xl">
           {data?.title}
@@ -30,8 +57,8 @@ const Billboard: React.FC = () => {
           <button
             onClick={handleOpenModal}
             className="
-            bg-white
-            text-white
+              bg-white
+              text-white
               bg-opacity-30 
               rounded-md 
               py-1 md:py-2 
@@ -45,13 +72,14 @@ const Billboard: React.FC = () => {
               hover:bg-opacity-20
               transition
             "
-            >
-              <InformationCircleIcon className="w-4 md:w-7 mr-1" />
-              More Info
+          >
+            <InformationCircleIcon className="w-4 md:w-7 mr-1" />
+            More Info
           </button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
+
 export default Billboard;
